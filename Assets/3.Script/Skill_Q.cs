@@ -15,15 +15,14 @@ public class Skill_Q : MonoBehaviour
 
     public void Straighten()
     {
-
-        if (consist == null || consist.Locomotive == null)
+        if (consist == null || consist.Locomotive == null) 
         {
-            return;
+            return; //방어 코드
         }
 
         Rigidbody carriage = consist.Locomotive.Body;
-        Quaternion targetRot = carriage.rotation;
-        Vector3 chainAnchor = carriage.position;
+        Quaternion targetRot = carriage.rotation; //객차의 회전
+        Vector3 chainAnchor = carriage.position; //객차의 위치
 
         TrainCar previous = consist.Locomotive;
 
@@ -39,10 +38,18 @@ public class Skill_Q : MonoBehaviour
                 break;
             }
 
-            Vector3 desiredAnchor = previous.transform.TransformPoint(previous.RearAnchorLocal)
-                        - carriage.transform.forward * consist.Gap;
-            Vector3 currentAnchor = car.transform.TransformPoint(car.FrontAnchorLocal);
-            car.transform.position += desiredAnchor - currentAnchor;
+            //객차들의 위치를 이전 객차들을 기준으로 이동
+            Vector3 desiredAnchor = previous.Body.position 
+                + previous.Body.rotation * previous.RearAnchorLocal
+                - (carriage.rotation * Vector3.forward) * consist.Gap;
+            Vector3 currentAnchor = car.Body.position + car.Body.rotation * car.FrontAnchorLocal;
+
+            Vector3 correction = desiredAnchor - currentAnchor;
+            car.Body.MovePosition(car.Body.position + correction);
+
+            //객차들의 회전을 기관차와 동일하게 만들기
+            car.Body.MoveRotation(targetRot);
+            
         }
 
     }
