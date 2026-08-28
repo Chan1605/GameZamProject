@@ -7,9 +7,15 @@ public class Skill_Q : MonoBehaviour
     private TrainConsist consist;    
 
     public string SkillName = "[SerializeTrain]";
-    
+
+    private void Awake()
+    {
+        consist = FindFirstObjectByType<TrainConsist>();
+    }
+
     public void Straighten()
     {
+
         if (consist == null || consist.Locomotive == null)
         {
             return;
@@ -34,7 +40,7 @@ public class Skill_Q : MonoBehaviour
             }
 
             Vector3 desiredAnchor = previous.transform.TransformPoint(previous.RearAnchorLocal)
-                        - locomotive.transform.forward * gap;
+                        - carriage.transform.forward * consist.Gap;
             Vector3 currentAnchor = car.transform.TransformPoint(car.FrontAnchorLocal);
             car.transform.position += desiredAnchor - currentAnchor;
         }
