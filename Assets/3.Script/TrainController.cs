@@ -22,6 +22,11 @@ public class TrainController : MonoBehaviour
     [Tooltip("연결된 열차 편성. 비워두면 씬에서 자동으로 찾습니다.")]
     [SerializeField] private TrainConsist consist;
 
+    [Header("경로 추종 연동")]
+    [Tooltip("맵 좌표를 따라 움직이는 경우 여기에 등록하면 좌우 방향(yaw)도 경로를 따라 자연스럽게 꺾입니다. " +
+             "비워두면 기존처럼 처음 바라보던 방향(직선)을 그대로 유지합니다.")]
+    [SerializeField] private TrainPathFollower pathFollower;
+
     [Header("기울기(피치) 연출")]
     //[Tooltip("체크하면 스크립트가 회전을 전담합니다. Rigidbody의 Freeze Rotation을 직접 관리하고 싶다면 해제하세요.")]
     //[SerializeField] private bool controlRotation = true;
@@ -115,11 +120,15 @@ public class TrainController : MonoBehaviour
     //    //float direction = noseUpWhenRising ? -1f : 1f;
     //    float targetPitch = t * maxPitchAngle * direction;
 
-    //    Quaternion targetRotation = Quaternion.Euler(targetPitch, initialYaw, initialRoll);
-    //    Quaternion next = Quaternion.Slerp(
-    //        rb.rotation,
-    //        targetRotation,
-    //        1f - Mathf.Exp(-pitchSmoothSpeed * Time.fixedDeltaTime));
+        // 경로 추종 스크립트가 있으면 그쪽이 계산한 진행 방향(yaw)을 쓰고,
+        // 없으면 기존처럼 처음 바라보던 방향을 그대로 유지합니다.
+        //float yaw = pathFollower != null ? pathFollower.CurrentYaw : initialYaw;
+
+        //Quaternion targetRotation = Quaternion.Euler(targetPitch, yaw, initialRoll);
+        //Quaternion next = Quaternion.Slerp(
+        //    rb.rotation,
+        //    targetRotation,
+        //    1f - Mathf.Exp(-pitchSmoothSpeed * Time.fixedDeltaTime));
 
     //    // 조인트와 충돌하지 않도록 Transform이 아닌 Rigidbody를 통해 회전시킵니다.
     //    rb.MoveRotation(next);

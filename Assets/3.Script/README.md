@@ -11,6 +11,8 @@ Unity 6000.2.8f1 / URP 17.2.0 / Input System 1.14.2 / Cinemachine 2.10.5 / ProBu
 기차는 **제자리에 떠 있고**, 장애물과 바닥이 기차 쪽으로 흘러옵니다.
 플레이어는 마우스 클릭으로 고도만 조절하며, 장애물에 부딪히면 그 지점 뒤의 객차가 분리·추락합니다.
 
+(선택 사항) 맵이 직선이 아니라 곡선으로 휘어야 한다면 8~10번의 `MapPath` / `MapChunkSpawner` / `TrainPathFollower`로 대체·병행할 수 있습니다 — 이 경우 기차가 실제로 좌표를 따라 앞으로 나아갑니다.
+
 ```
 [ 조작 ]                    [ 편성 ]                      [ 월드 ]
 TrainController  ──────▶  TrainConsist  ──▶ TrainCar     ScrollController
@@ -36,6 +38,7 @@ TrainController  ──────▶  TrainConsist  ──▶ TrainCar     Scr
 
 - `Jump Height` (10) — 클릭 시 올라갈 높이. `v = √(2gh)` 공식으로 초기 속도를 계산하므로 이 값이 곧 실제 상승 높이
 - `Consist` — 비워두면 TrainConsist가 자동으로 연결
+- `Path Follower` — 맵 좌표를 따라 움직이는 경우 `TrainPathFollower`를 여기에 등록. 비워두면 처음 바라보던 방향(직선)을 그대로 유지
 - `Control Rotation` (true) — 스크립트가 회전을 전담. 끄면 Rigidbody의 Freeze Rotation을 직접 관리 가능
 - `Nose Up When Rising` (true) — 상승 시 앞머리가 위로. 모델 방향이 반대면 해제
 - `Max Pitch Angle` (25) / `Velocity For Max Pitch` (8) / `Pitch Smooth Speed` (6)
@@ -186,6 +189,64 @@ scroll.Resume();
 
 ---
 
+## 8. MapPath.cs — 맵 조각에 찍는 경로 좌표
+
+Group 같은 맵 프리팹 루트에 붙여, 기차가 따라갈 좌표(진행 방향 순서)를 정의합니다.
+
+- `Points` — 순서대로 등록할 빈 오브젝트 배열. 비워두면 `Points Container`(또는 자기 자신)의 자식들을 하이러키 순서 그대로 자동 수집
+- 씬 뷰에서 보라색 구슬 + 번호로 순서가 보입니다.
+- **이음매 요령**: 이 조각의 첫 좌표는 로컬 Z ≈ 0, 마지막 좌표는 로컬 Z ≈ (진행축 길이) 부근에 두세요. `MapChunkSpawner`가 조각을 정확히 그 길이만큼 이격해 배치하므로, 그렇게 두면 앞 조각의 마지막 좌표와 다음 조각의 첫 좌표가 자연스럽게 이어집니다.
+
+---
+
+## 9. MapChunkSpawner.cs — 맵(Group) 무한 이어붙이기
+
+Group 프리팹을 진행 방향으로 이어 붙여 끝없는 트랙을 만듭니다. `GroundScroller`와 달리 조각들은 흐르지 않고 **제자리에 고정**되며, 기차가 그 안의 `MapPath` 좌표를 따라 실제로 앞으로 나아갑니다.
+
+**Inspector**
+
+| 항목 | 기본값 | 설명 |
+|---|---|---|
+| `Chunk Prefab` | — | Group 프리팹. 루트에 `MapPath`가 있어야 함 |
+| `Chunk Count` | 4 | 동시에 유지할 조각 수 |
+| `Chunk Length` | 0 | 조각 하나의 진행축 길이(m). 0이면 렌더러 크기로 자동 측정. `Tools ▸ 맵 크기 측정 (Group)`으로 미리 잰 값을 직접 넣어도 됨 |
+| `Axis Reference` | — | 이어붙일 기준 방향. 비워두면 자기 자신의 forward |
+| `Despawn Behind` | 40 | 기차보다 이만큼 뒤처지면 조각을 맨 앞으로 재배치 |
+| `Train` | — | 비워두면 씬에서 `TrainPathFollower` 자동 탐색 |
+
+**동작 요점**
+
+- 조각을 정확히 `Chunk Length`만큼 이격해 배치 → 겹치거나 틈이 생기지 않음
+- 조각이 재배치될 때마다 살아있는 조각들의 `MapPath` 좌표를 진행 순서로 이어 붙여 `TrainPathFollower.SetPath()`에 넘김
+- ⚠️ 진행 축 하나를 기준으로 앞뒤를 판정하므로, 완만한 커브(좌우로 살짝 휘는 정도)에는 잘 맞지만 **90도 이상 크게 꺾이거나 루프 형태의 트랙**에는 맞지 않습니다. 그런 트랙이 필요해지면 회수 판정을 경로 누적거리 기준으로 바꿔야 합니다.
+
+---
+
+## 10. TrainPathFollower.cs — 좌표를 따라 움직이는 기차
+
+기차가 일직선이 아니라 `MapChunkSpawner`가 넘겨준 좌표들을 따라 움직이게 합니다. 같은 Rigidbody에서 **좌우/앞뒤 진행**만 담당하고, 점프(y축)·피치는 기존 `TrainController`가 그대로 담당합니다.
+
+```csharp
+follower.SetPath(worldPoints);   // MapChunkSpawner가 자동 호출
+follower.CurrentYaw              // TrainController가 회전에 합성
+follower.CurrentForward
+follower.DistanceTraveled
+```
+
+**Inspector**
+
+- `Scroll` — 비워두면 `Speed` 값을 직접 사용. 채워두면 `ScrollController.Speed`를 우선 사용해 장애물·바닥과 속도를 맞춤
+- `Speed` (30)
+- `Look Ahead Distance` (6) — 현재 지점보다 얼마나 앞을 보고 방향을 잡을지. 작으면 좌표를 칼같이 따라가지만 급커브에서 흔들리고, 크면 코너를 부드럽게 자르며 돎
+- `Max Turn Speed` (120°/s) — 급커브에서 순간적으로 홱 꺾이지 않도록 회전 속도 제한
+
+**동작 요점**
+
+- 매 FixedUpdate마다 진행 거리를 누적하고, 경로 상의 look-ahead 지점을 향하도록 수평 속도(x, z)만 설정 — 조인트로 매달린 객차들은 물리적으로 자연스럽게 따라옴(코너를 살짝 안쪽으로 자르는 실제 기차 같은 움직임)
+- 경로가 비어 있으면(아직 `MapChunkSpawner`가 안 채워줬으면) 대기
+
+---
+
 ## 씬 세팅 절차
 
 1. **기관차** — 씬의 train에 `Rigidbody` → `TrainCar` → `TrainController` 추가
@@ -199,6 +260,12 @@ scroll.Resume();
    - Body: Transposer, Binding Mode **Lock To Target With World Up** (Lock To Target은 피치까지 따라가 멀미남)
    - Aim: Composer + Dead Zone Height 0.2~0.3 (피치로 인한 까딱거림 억제)
    - Brain의 Update Method는 기본값 Smart Update 유지
+6. **(선택) 맵 좌표 경로 추종** — 기차를 직선이 아니라 Group에 찍은 좌표대로 움직이려면
+   - Group 프리팹 루트에 `MapPath` 부착 → 진행 방향 순서로 빈 오브젝트를 자식으로 만들어 경로 좌표로 등록
+   - 기관차(Rigidbody가 있는 오브젝트)에 `TrainPathFollower` 부착
+   - 빈 GameObject에 `MapChunkSpawner` 부착 → Chunk Prefab에 Group, Train 슬롯에 위 `TrainPathFollower` 등록
+   - `TrainController`의 `Path Follower` 슬롯에도 같은 `TrainPathFollower`를 등록해야 좌우 회전(yaw)이 경로를 따라 꺾임
+   - 정확한 이격 거리가 궁금하면 `Tools ▸ 맵 크기 측정 (Group)` 메뉴 실행 → Console에서 size.x/y/z 확인
 
 ---
 
@@ -227,7 +294,7 @@ Rigidbody에서 수동으로 만지려면 `Control Rotation`을 끄세요.
 
 ## 미구현 (기획서 대비 남은 것)
 
-- 방향키 좌우 조작 / 연료 시스템 / 점수 시스템
+- 방향키 좌우 조작(경로 기준 좌우 스티어링·장애물 회피) / 연료 시스템 / 점수 시스템
 - 링 게이트 통과 판정 (트리거 + 진행 방향 내적 검사로 역방향 통과 배제)
 - 공중 ↔ 수중 전환, 캐릭터 변신
 - 난이도 커브 (ScrollController.SetSpeed로 속도 상승)
