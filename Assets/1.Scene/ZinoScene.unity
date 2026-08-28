@@ -646,7 +646,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -784,7 +784,7 @@ MonoBehaviour:
   scroll: {fileID: 0}
   obstaclePrefabs:
   - {fileID: 6384326718038100845, guid: 855c5fd3b6f9c7d45936f8a389a03c21, type: 3}
-  spacing: 1000
+  spacing: 900
   spawnDistance: 1000
   despawnDistance: 2000
   prewarm: 1
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f9310f6edf4eb4991fa832b8c26b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollController
-  speed: 30
+  speed: 60
   running: 1
 --- !u!4 &1451454883
 Transform:
