@@ -3,25 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class SaveData // 직렬화 될 전체 데이터입니다.
-{
-    public List<Record> saveRecords;
-}
-
-[System.Serializable] // 플레이어별로 저장하여 랭크를 매길 데이터입니다.
-public class Record
-{
-    public string name;
-    public int score;
-}
 
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance = null;
 
     public SaveData saveData; // 저장 파일
-    public string path;
+    private string path;
 
     private void Awake()
     {
@@ -33,9 +21,15 @@ public class SaveManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
 
-        path = Application.persistentDataPath + "TraInCity/SaveData.json";
+        if (!Directory.Exists(Application.persistentDataPath + "/TraInCity/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/TraInCity/");
+        }
+
+        path = Application.persistentDataPath + "/TraInCity/SaveData.json";
         LoadData();
 
     }
@@ -45,6 +39,7 @@ public class SaveManager : MonoBehaviour
         if(!File.Exists(path))
         {
             saveData = new SaveData();
+            saveData.saveRecords = new List<Record>();
         }
         else
         {
