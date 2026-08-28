@@ -33,9 +33,15 @@ public class SaveManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
 
-        path = Application.persistentDataPath + "TraInCity/SaveData.json";
+        if (!Directory.Exists(Application.persistentDataPath + "/TraInCity/"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/TraInCity/");
+        }
+
+        path = Application.persistentDataPath + "/TraInCity/SaveData.json";
         LoadData();
 
     }
@@ -45,6 +51,7 @@ public class SaveManager : MonoBehaviour
         if(!File.Exists(path))
         {
             saveData = new SaveData();
+            saveData.saveRecords = new List<Record>();
         }
         else
         {
