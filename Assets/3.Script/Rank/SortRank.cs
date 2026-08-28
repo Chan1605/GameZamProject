@@ -7,7 +7,7 @@ public class SortRank : MonoBehaviour
 {
 
     private SaveData saveData;
-    public Record curRecord;
+    private Record curRecord;
 
     // 이번 플레이어의 기록을 생성한 후, 삽입 정렬 방식으로 기존 기록에 넣은 후 덮어씌우기
     // 인덱스 기반으로 관리
