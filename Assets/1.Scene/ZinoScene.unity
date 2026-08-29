@@ -184,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 24384932}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13631265, y: -0.000000028629472, z: 0.0000000039393293, w: 0.99066585}
-  m_LocalPosition: {x: 29, y: 36.33, z: -513.4}
+  m_LocalPosition: {x: 0, y: 20, z: -60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -279,7 +279,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13631266, y: -0.000000028629474, z: 0.0000000039393298, w: 0.99066585}
-  m_LocalPosition: {x: 29, y: 36.33, z: -513.4}
+  m_LocalPosition: {x: 0, y: 20, z: -60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
-  m_YawDamping: 0
+  m_YawDamping: 1.1
   m_RollDamping: 0
   m_AngularDamping: 0
 --- !u!114 &343444248
@@ -599,6 +599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrainController
   jumpHeight: 20
   consist: {fileID: 0}
+  pathFollower: {fileID: 0}
   controlRotation: 0
   noseUpWhenRising: 1
   maxPitchAngle: 25
@@ -629,7 +630,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 114
+  m_Constraints: 64
   m_CollisionDetection: 0
 --- !u!65 &632187042
 BoxCollider:
@@ -742,8 +743,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1451454883}
   - component: {fileID: 1451454882}
-  - component: {fileID: 1451454881}
-  - component: {fileID: 1451454880}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Untagged
@@ -751,46 +750,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1451454880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451454879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e1d5b39fff639f4ab61e7729f9d39d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GroundScroller
-  scroll: {fileID: 0}
-  tilePrefab: {fileID: 1144482288005750139, guid: c76490610d8607d469a27e5073808a50, type: 3}
-  tileCount: 2
-  tileLength: 0
-  groundY: 0
-  startBehind: 60
---- !u!114 &1451454881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451454879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a54aafc7d74ba44a74921c0dbf5933, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
-  scroll: {fileID: 0}
-  obstaclePrefabs:
-  - {fileID: 6384326718038100845, guid: 855c5fd3b6f9c7d45936f8a389a03c21, type: 3}
-  spacing: 900
-  spawnDistance: 1000
-  despawnDistance: 2000
-  prewarm: 1
-  minY: 0
-  maxY: 0
-  randomRoll: 0
 --- !u!114 &1451454882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,7 +773,65 @@ Transform:
   m_GameObject: {fileID: 1451454879}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 76, y: 5.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1807088800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1807088802}
+  - component: {fileID: 1807088801}
+  m_Layer: 0
+  m_Name: MapChunkSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1807088801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807088800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e7027ef00dd1b4ea884c6259db17d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapChunkSpawner
+  contract: {fileID: 11400000, guid: 074ba1e7110287f499e7e89abac15a82, type: 2}
+  fallbackChunkLength: 0
+  chunkVariants:
+  - prefab: {fileID: 1789690884693139818, guid: 953589ff159ad874a91ee3c6c1b295d8, type: 3}
+    weight: 1
+  chunkCount: 3
+  startOffset: 150
+  avoidImmediateRepeat: 1
+  startVariantIndex: 0
+  randomSeed: 0
+  axisReference: {fileID: 0}
+  despawnBehind: 40
+  train: {fileID: 0}
+  editorPreviewChunk: {fileID: 0}
+--- !u!4 &1807088802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807088800}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1304,7 +1321,7 @@ Transform:
   m_GameObject: {fileID: 919132148984806065}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29, y: 16.33, z: -453.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1411,6 +1428,7 @@ GameObject:
   - component: {fileID: 543450652703006731}
   - component: {fileID: 632187040}
   - component: {fileID: 632187039}
+  - component: {fileID: 919132148984806067}
   - component: {fileID: 632187042}
   - component: {fileID: 919132148984806066}
   m_Layer: 0
@@ -1441,6 +1459,27 @@ MonoBehaviour:
   detachImpulse: 1.5
   detachTorque: 4
   destroyDelay: 6
+--- !u!114 &919132148984806067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148984806065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e02729ca08b2694799d73aa7f098bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainPathFollower
+  scroll: {fileID: 1451454882}
+  speed: 30
+  smoothPath: 1
+  subdivisions: 10
+  curveTension: 0.5
+  lookAheadTime: 1.2
+  minLookAhead: 15
+  turnSmoothTime: 0.5
+  maxTurnSpeed: 60
 --- !u!23 &1020922477773372459
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4314,3 +4353,4 @@ SceneRoots:
   - {fileID: 1451454883}
   - {fileID: 2012055421}
   - {fileID: 2054633848}
+  - {fileID: 1807088802}
