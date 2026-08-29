@@ -25,6 +25,7 @@ public class TrainConsist : MonoBehaviour
     [SerializeField, Min(0)] private int carCount = 3;
     [Tooltip("차량 사이를 벌릴 거리(m). 위치는 모델의 실제 연결 지점을 기준으로 자동 계산됩니다.")]
     [SerializeField] private float gap = 0.3f;
+    public float Gap => gap; //스킬에 사용하기 위해 필요한 값을 가져오기 위한 연결부
 
     [Header("연결부 설정")]
     [SerializeField] private CouplerSettings couplerSettings = new CouplerSettings();

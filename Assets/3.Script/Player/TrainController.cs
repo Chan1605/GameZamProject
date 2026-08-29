@@ -28,10 +28,10 @@ public class TrainController : MonoBehaviour
     [SerializeField] private TrainPathFollower pathFollower;
 
     [Header("기울기(피치) 연출")]
-    [Tooltip("체크하면 스크립트가 회전을 전담합니다. Rigidbody의 Freeze Rotation을 직접 관리하고 싶다면 해제하세요.")]
-    [SerializeField] private bool controlRotation = true;
-    [Tooltip("체크하면 상승할 때 앞머리가 위로, 하강할 때 앞머리가 아래로 기울어집니다. 반대로 움직이면 체크를 해제하세요.")]
-    [SerializeField] private bool noseUpWhenRising = true;
+    //[Tooltip("체크하면 스크립트가 회전을 전담합니다. Rigidbody의 Freeze Rotation을 직접 관리하고 싶다면 해제하세요.")]
+    //[SerializeField] private bool controlRotation = true;
+    //[Tooltip("체크하면 상승할 때 앞머리가 위로, 하강할 때 앞머리가 아래로 기울어집니다. 반대로 움직이면 체크를 해제하세요.")]
+    //[SerializeField] private bool noseUpWhenRising = true;
     [Tooltip("최대로 기울어지는 각도(도)")]
     [SerializeField] private float maxPitchAngle = 25f;
     [Tooltip("이 수직 속도(m/s)에 도달하면 maxPitchAngle까지 기울어집니다.")]
@@ -58,11 +58,11 @@ public class TrainController : MonoBehaviour
         initialYaw = startEuler.y;
         initialRoll = startEuler.z;
 
-        // 회전을 스크립트가 제어하는 동안에는, 매달린 객차가 기관차를 흔들지 못하게 고정합니다.
-        if (controlRotation)
-        {
-            rb.constraints |= RigidbodyConstraints.FreezeRotation;
-        }
+        //// 회전을 스크립트가 제어하는 동안에는, 매달린 객차가 기관차를 흔들지 못하게 고정합니다.
+        //if (controlRotation)
+        //{
+        //    rb.constraints |= RigidbodyConstraints.FreezeRotation;
+        //}
     }
 
     // 물리 공식(v = sqrt(2 * g * h))으로 목표 높이에 필요한 초기 속도를 계산합니다.
@@ -107,32 +107,32 @@ public class TrainController : MonoBehaviour
         body.linearVelocity = velocity;
     }
 
-    private void FixedUpdate()
-    {
-        if (controlRotation) UpdatePitch();
-    }
+    //private void FixedUpdate()
+    //{
+    //    if (controlRotation) UpdatePitch();
+    //}
 
-    // 수직 속도에 비례해 앞머리가 위/아래로 기울어지도록 회전을 보간합니다.
-    private void UpdatePitch()
-    {
-        float verticalVelocity = rb.linearVelocity.y;
-        float t = Mathf.Clamp(verticalVelocity / velocityForMaxPitch, -1f, 1f);
-        float direction = noseUpWhenRising ? -1f : 1f;
-        float targetPitch = t * maxPitchAngle * direction;
+    //// 수직 속도에 비례해 앞머리가 위/아래로 기울어지도록 회전을 보간합니다.
+    //private void UpdatePitch()
+    //{
+    //    float verticalVelocity = rb.linearVelocity.y;
+    //    float t = Mathf.Clamp(verticalVelocity / velocityForMaxPitch, -1f, 1f);
+    //    //float direction = noseUpWhenRising ? -1f : 1f;
+    //    float targetPitch = t * maxPitchAngle * direction;
 
         // 경로 추종 스크립트가 있으면 그쪽이 계산한 진행 방향(yaw)을 쓰고,
         // 없으면 기존처럼 처음 바라보던 방향을 그대로 유지합니다.
-        float yaw = pathFollower != null ? pathFollower.CurrentYaw : initialYaw;
+        //float yaw = pathFollower != null ? pathFollower.CurrentYaw : initialYaw;
 
-        Quaternion targetRotation = Quaternion.Euler(targetPitch, yaw, initialRoll);
-        Quaternion next = Quaternion.Slerp(
-            rb.rotation,
-            targetRotation,
-            1f - Mathf.Exp(-pitchSmoothSpeed * Time.fixedDeltaTime));
+        //Quaternion targetRotation = Quaternion.Euler(targetPitch, yaw, initialRoll);
+        //Quaternion next = Quaternion.Slerp(
+        //    rb.rotation,
+        //    targetRotation,
+        //    1f - Mathf.Exp(-pitchSmoothSpeed * Time.fixedDeltaTime));
 
-        // 조인트와 충돌하지 않도록 Transform이 아닌 Rigidbody를 통해 회전시킵니다.
-        rb.MoveRotation(next);
-    }
+    //    // 조인트와 충돌하지 않도록 Transform이 아닌 Rigidbody를 통해 회전시킵니다.
+    //    rb.MoveRotation(next);
+    //}
 
 #if UNITY_EDITOR
     // 에디터에서 jumpHeight 값을 플레이 중에 바꿔도 즉시 반영되도록 처리
