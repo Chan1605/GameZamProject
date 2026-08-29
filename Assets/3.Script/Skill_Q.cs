@@ -48,8 +48,6 @@ public class Skill_Q : MonoBehaviour
 
             //다음 차량이 붙어야 할 자리를 계산함
             chainAnchor = newPos + targetRot * car.RearAnchorLocal - (targetRot * Vector3.forward) * consist.Gap;
-
-
         }
 
     }
