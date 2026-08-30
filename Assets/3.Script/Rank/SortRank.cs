@@ -9,6 +9,8 @@ public class SortRank : MonoBehaviour
     private SaveData saveData;
     private Record curRecord;
 
+    [SerializeField] ResultUI resultUI;
+
     // 이번 플레이어의 기록을 생성한 후, 삽입 정렬 방식으로 기존 기록에 넣은 후 덮어씌우기
     // 인덱스 기반으로 관리
 
@@ -16,7 +18,10 @@ public class SortRank : MonoBehaviour
     {
         saveData = SaveManager.Instance.saveData;
 
+        curRecordAdd(SaveManager.Instance.PlayerName, SaveManager.Instance.PlayerScore);
+
         InsertSort();
+        resultUI.UpdateRanking();
     }
 
     public void curRecordAdd(string name, int score)
@@ -31,7 +36,7 @@ public class SortRank : MonoBehaviour
     {
         saveData.saveRecords.Add(curRecord);
 
-        if (saveData.saveRecords.Count <= 1) // 기록에 자신뿐이라면
+        if (saveData.saveRecords.Count <= 1) // 기록에 자신뿐이라면 리턴
         {
             SaveManager.Instance.SaveGame();
             return;
