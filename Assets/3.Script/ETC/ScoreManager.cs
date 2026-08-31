@@ -23,12 +23,7 @@ public class ScoreManager : MonoBehaviour
         {
             SaveManager.Instance.PlayerScore = Score;
         }
-    private void OnDestroy()
-    {
-        if(SaveManager.Instance != null)
-        SaveManager.Instance.PlayerScore = Score;
     }
-
     public void AddScore(int amount)
     {
         Score += amount;
