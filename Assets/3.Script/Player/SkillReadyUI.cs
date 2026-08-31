@@ -10,17 +10,23 @@ public class SkillReadyUI : MonoBehaviour
 
     [SerializeField] private Image[] skillBoxUI = new Image[3]; // 3칸
 
-    private int onSkillNum = 0; // 0 없음 / 1 / 2 / 3 칸
+    private int onSkillNum; // 0 없음 / 1 / 2 / 3 칸
 
+    private void Start()
+    {
+        onSkillNum = 0;
+    }
     public void SkillOn()
     {
-        if(onSkillNum.Equals(3))
+        if(onSkillNum>3)
         {
+            onSkillNum = 3;
             return;
         }
 
         onSkillNum++;
         skillBoxUI[onSkillNum - 1].sprite = skillOnSprite;
+        Debug.Log($"{onSkillNum} 번 이미지 변경합니다");
     }
 
     public void QSkillUse()

@@ -216,7 +216,7 @@ public class Chicken : MonoBehaviour
             StopCoroutine(flight_co);
             flight_co = null;
         }
-
+        
         FlightEnded?.Invoke();
     }
 }
