@@ -838,6 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
   scoreText: {fileID: 1381856738}
+  skillPoint: {fileID: 919132148984806071}
 --- !u!4 &1236912435
 Transform:
   m_ObjectHideFlags: 0
@@ -2217,6 +2218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrainSlowSkill
   consist: {fileID: 0}
   pathFollower: {fileID: 0}
+  skillPoint: {fileID: 919132148984806071}
   SkillKey: 19
   SlowScale: 1
   bashForce: 10
@@ -2237,6 +2239,7 @@ MonoBehaviour:
   consist: {fileID: 1907996067}
   alignKey: 31
   alignHoldDuration: 0.3
+  skillPoint: {fileID: 919132148984806071}
 --- !u!65 &919132148984806070
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class TrainAlignSkill : MonoBehaviour
     [SerializeField] private TrainConsist consist;
     [SerializeField] private Key alignKey = Key.Q;
     [SerializeField] private float alignHoldDuration = 0.3f;
+    [SerializeField] private PlayerSkillPoint skillPoint;
 
     private Coroutine routine;
 
@@ -20,6 +21,8 @@ public class TrainAlignSkill : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current[alignKey].wasPressedThisFrame)
         {
+            if (skillPoint.UseSkillPoint().Equals(false)) return; // 스킬포인트 확인 후 재생
+
             if (routine != null) StopCoroutine(routine);
             routine = StartCoroutine(AlignRoutine());
         }

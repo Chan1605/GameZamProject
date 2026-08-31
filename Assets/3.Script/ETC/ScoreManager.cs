@@ -6,6 +6,7 @@ public class ScoreManager : MonoBehaviour
 {
         
     [SerializeField] private Text scoreText;
+    [SerializeField] private PlayerSkillPoint skillPoint;
 
     public int Score { get; private set; }
 
@@ -15,17 +16,23 @@ public class ScoreManager : MonoBehaviour
     }
 
 
+
     private void OnDestroy()
     {
         if (SaveManager.Instance != null) //방어코드 추가
         {
             SaveManager.Instance.PlayerScore = Score;
         }
+    private void OnDestroy()
+    {
+        SaveManager.Instance.PlayerScore = Score;
     }
 
     public void AddScore(int amount)
     {
         Score += amount;
+        skillPoint.AddSkillPoint();
+
         Debug.Log($"현재 점수: {Score}");
         RefreshUI();
     }

@@ -844,6 +844,8 @@ MonoBehaviour:
   invertPitchInput: 0
   invertYawInput: 0
   rotationSmoothSpeed: 10
+  trainVisuals: []
+  chickenVisual: {fileID: 0}
 --- !u!54 &632187040
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1059,6 +1061,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 0}
   gameOverText: {fileID: 0}
   restartKey: 32
+  chickenBonusDuration: 3
 --- !u!4 &836144770
 Transform:
   m_ObjectHideFlags: 0
@@ -1420,7 +1423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1269182414
 MonoBehaviour:
   m_ObjectHideFlags: 0
