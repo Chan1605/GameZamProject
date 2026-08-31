@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private TrainConsist consist;
     [SerializeField] private ScrollController scroll;
+    [SerializeField] private CameraCtrl cameraCtrl;
+    [SerializeField] private Chicken chicken;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Text gameOverText;
     [SerializeField] private Key restartKey = Key.R;
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
     {
         if (consist == null) consist = FindFirstObjectByType<TrainConsist>();
         if (scroll == null) scroll = FindFirstObjectByType<ScrollController>();
+        if (cameraCtrl == null) cameraCtrl = FindFirstObjectByType<CameraCtrl>();
+        if (chicken == null) chicken = FindAnyObjectByType<Chicken>(FindObjectsInactive.Include);
+        //비활성화 상태로 있어서 평범하게는 검색이 안 됨
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
 
         if (consist == null)
@@ -35,27 +40,26 @@ public class GameManager : MonoBehaviour
 
         // 머리가 트레일 없이 직접 부딪혔을 때만 게임오버
         consist.LocomotiveCrashed += HandleLocomotiveCrashed;
+
+        if (chicken != null)
+        {
+            chicken.FlightEnded += HandleFlightEnded; // ← 추가
+        }
     }
 
     private void HandleLocomotiveCrashed(TrainCar car, Collision collision)
     {
-        if (bonusStarted || IsGameOver) return;
-        bonusStarted = true;
-        StartCoroutine(ChickenBonusThenGameOver());
+        chicken.LastFlight(car);
+        if (cameraCtrl != null)
+        {
+            cameraCtrl.SetTarget(chicken.transform);
+        }
+        car.gameObject.SetActive(false);
     }
 
-    private IEnumerator ChickenBonusThenGameOver()
+    private void HandleFlightEnded()
     {
-        consist.ForceInvincible(chickenBonusDuration + 0.5f);
-
-        if (consist.Locomotive != null && consist.Locomotive.TryGetComponent(out TrainController controller))
-        {
-            //controller.SetControllable(false);   // 조작(입력)만 비활성화, 이동은 유지
-            controller.ActivateChickenVisual();  // 비주얼만 교체
-        }
-
-        yield return new WaitForSeconds(chickenBonusDuration);
-        TriggerGameOver();
+        TriggerGameOver(); 
     }
 
 
@@ -96,6 +100,11 @@ public class GameManager : MonoBehaviour
         if (consist != null)
         {
             consist.LocomotiveCrashed -= HandleLocomotiveCrashed;
+        }
+
+        if (chicken != null)
+        {
+            chicken.FlightEnded -= HandleFlightEnded; 
         }
     }
 }
