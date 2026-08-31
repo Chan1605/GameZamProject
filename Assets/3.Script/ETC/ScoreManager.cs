@@ -17,6 +17,7 @@ public class ScoreManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if(SaveManager.Instance != null)
         SaveManager.Instance.PlayerScore = Score;
     }
 
