@@ -94755,6 +94755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6248591963563067936}
   - component: {fileID: 445156271374784911}
+  - component: {fileID: 7802897858228848280}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -94798,6 +94799,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7802897858228848280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4399660905775191306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &4400833490921131060
 GameObject:
   m_ObjectHideFlags: 0
@@ -96791,6 +96807,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9010326124135852721}
   - component: {fileID: 3010175122726065584}
+  - component: {fileID: 6261004715001004981}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -96834,6 +96851,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6261004715001004981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544886930558650101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &4560665373731419426
 GameObject:
   m_ObjectHideFlags: 0
@@ -97403,6 +97435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 151358034731620925}
   - component: {fileID: 4423913917412471350}
+  - component: {fileID: 8201826496036600794}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -97446,6 +97479,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8201826496036600794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4608453424122667022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &4619162111901147288
 GameObject:
   m_ObjectHideFlags: 0
@@ -104199,6 +104247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1547499392253129053}
   - component: {fileID: 4705379445675783745}
+  - component: {fileID: 8030308132263139998}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -104242,6 +104291,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8030308132263139998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5062419821678281727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &5064241511047574317
 GameObject:
   m_ObjectHideFlags: 0
@@ -143055,6 +143119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7315962612063895640}
   - component: {fileID: 8150876059002606391}
+  - component: {fileID: 1293316240530430756}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -143098,6 +143163,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1293316240530430756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6865890148265254119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &6875612661470964812
 GameObject:
   m_ObjectHideFlags: 0
@@ -194486,6 +194566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3548311848734367677}
   - component: {fileID: 7206604626631988319}
+  - component: {fileID: 1349471623417055562}
   m_Layer: 3
   m_Name: Point
   m_TagString: Untagged
@@ -194529,6 +194610,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1349471623417055562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594684296017538760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29d3c8d94f02fe49b36b4926070d76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RingGate
+  scoreManager: {fileID: 0}
+  consist: {fileID: 0}
+  scoreOncePerActivation: 1
 --- !u!1 &8598113298053108300
 GameObject:
   m_ObjectHideFlags: 0

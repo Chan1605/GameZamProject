@@ -1,27 +1,19 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// 열차 한 량(車輛). 편성 내 위치를 나타내는 CarIndex를 가집니다. (0 = 기관차, 뒤로 갈수록 1, 2, 3...)
-/// 앞 차량과는 TrainCoupler(연결부)로 이어지며, Detach()를 호출하면 연결이 끊기고 물리적으로 추락합니다.
-/// </summary>
+
 [RequireComponent(typeof(Rigidbody))]
 public class TrainCar : MonoBehaviour
 {
     [Header("식별")]
-    [Tooltip("편성 내 순번. 0 = 기관차(맨 앞). TrainConsist가 자동으로 부여합니다.")]
     [SerializeField] private int carIndex;
 
     [Header("연결 지점 (비워두면 모델 크기에서 자동 계산)")]
-    [Tooltip("앞 차량과 이어지는 지점. 비워두면 모델의 앞쪽 끝(+Z)이 사용됩니다.")]
     [SerializeField] private Transform frontCouplingPoint;
-    [Tooltip("뒤 차량과 이어지는 지점. 비워두면 모델의 뒤쪽 끝(-Z)이 사용됩니다.")]
     [SerializeField] private Transform rearCouplingPoint;
 
     [Header("자동 설정")]
-    [Tooltip("콜라이더가 하나도 없으면 모델 크기에 맞는 BoxCollider를 자동으로 붙입니다.")]
     [SerializeField] private bool autoFitCollider = true;
-    [Tooltip("모든 차량의 질량을 같게 맞추면 조인트가 훨씬 안정적입니다.")]
     [SerializeField] private bool overrideMass = true;
     [SerializeField] private float mass = 1f;
 
@@ -37,14 +29,12 @@ public class TrainCar : MonoBehaviour
     private Bounds localBounds;
     private bool initialized;
 
-    /// <summary>편성 내 순번. 0 = 기관차.</summary>
     public int CarIndex
     {
         get => carIndex;
         internal set => carIndex = value;
     }
 
-    /// <summary>이미 분리되어 떨어진 차량인지 여부.</summary>
     public bool IsDetached { get; private set; }
 
     public Rigidbody Body
@@ -52,19 +42,15 @@ public class TrainCar : MonoBehaviour
         get { Initialize(); return rb; }
     }
 
-    /// <summary>이 차량을 앞 차량에 매달고 있는 연결부. 기관차는 null.</summary>
     public TrainCoupler FrontCoupler { get; internal set; }
 
-    /// <summary>이 차량이 무언가와 부딪혔을 때 발생. TrainConsist가 구독해 뒤쪽을 분리합니다.</summary>
     public event Action<TrainCar, Collision> Collided;
 
-    /// <summary>모델의 앞뒤 길이(로컬 Z 기준). 차량 간격 계산에 사용합니다.</summary>
     public float Length
     {
         get { Initialize(); return localBounds.size.z; }
     }
 
-    /// <summary>앞 차량과 이어질 지점 (이 차량의 로컬 좌표).</summary>
     public Vector3 FrontAnchorLocal
     {
         get
@@ -76,7 +62,6 @@ public class TrainCar : MonoBehaviour
         }
     }
 
-    /// <summary>뒤 차량과 이어질 지점 (이 차량의 로컬 좌표).</summary>
     public Vector3 RearAnchorLocal
     {
         get
@@ -90,10 +75,6 @@ public class TrainCar : MonoBehaviour
 
     private void Awake() => Initialize();
 
-    /// <summary>
-    /// Awake 실행 순서에 의존하지 않도록, TrainConsist에서도 명시적으로 호출할 수 있는 초기화.
-    /// 여러 번 불러도 안전합니다.
-    /// </summary>
     public void Initialize()
     {
         if (initialized) return;
@@ -105,20 +86,15 @@ public class TrainCar : MonoBehaviour
         if (overrideMass) rb.mass = mass;
         if (autoFitCollider) FitCollider();
 
-        // 조인트로 이어진 물체는 솔버 반복 횟수를 올려야 늘어짐/떨림이 줄어듭니다.
         rb.solverIterations = Mathf.Max(rb.solverIterations, 16);
         rb.solverVelocityIterations = Mathf.Max(rb.solverVelocityIterations, 8);
         rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
-    /// <summary>
-    /// 앞 연결부를 끊고 이 차량을 물리적으로 추락시킵니다.
-    /// 뒤에 달린 차량까지 한꺼번에 떨어뜨리려면 TrainConsist.BreakCouplerAt()을 사용하세요.
-    /// </summary>
     public void Detach()
     {
         if (IsDetached) return;
-        IsDetached = true; // 연결부 파손 이벤트가 되돌아와도 무한 재귀에 빠지지 않도록 먼저 세팅
+        IsDetached = true;
 
         Initialize();
 
@@ -132,7 +108,6 @@ public class TrainCar : MonoBehaviour
         rb.useGravity = true;
         rb.constraints = RigidbodyConstraints.None; // 기관차가 회전 고정 상태였을 수 있으므로 해제
 
-        // 그냥 수직 낙하하면 밋밋하므로 약간 튕기고 구르게 만듭니다.
         rb.AddForce(UnityEngine.Random.onUnitSphere * detachImpulse, ForceMode.VelocityChange);
         rb.AddTorque(UnityEngine.Random.onUnitSphere * detachTorque, ForceMode.VelocityChange);
 
@@ -144,7 +119,6 @@ public class TrainCar : MonoBehaviour
         Collided?.Invoke(this, collision);
     }
 
-    // 콜라이더가 하나도 없으면 모델 전체를 감싸는 BoxCollider를 붙입니다.
     private void FitCollider()
     {
         if (GetComponentInChildren<Collider>() != null) return;
@@ -154,7 +128,6 @@ public class TrainCar : MonoBehaviour
         box.size = localBounds.size;
     }
 
-    // 자식 메시들의 실제 크기를 이 오브젝트의 로컬 좌표계로 모아 계산합니다.
     private Bounds CalculateLocalBounds()
     {
         Matrix4x4 toLocal = transform.worldToLocalMatrix;
@@ -194,7 +167,6 @@ public class TrainCar : MonoBehaviour
         }
     }
 
-    // 씬 뷰에서 연결 지점을 눈으로 확인할 수 있게 표시합니다.
     private void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying) localBounds = CalculateLocalBounds();
