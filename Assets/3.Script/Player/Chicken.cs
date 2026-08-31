@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,32 @@ public class Chicken : MonoBehaviour
     [Tooltip("닭의 최대 비행 시간")]
     [SerializeField] private float flightTime = 15f;
 
+    [Header("각도 조작 (WASD)")]
+    [SerializeField] private bool controlRotation = true;
+    [SerializeField] private float pitchSpeed = 70f;
+    [SerializeField] private float yawSpeed = 70f;
+    [SerializeField] private float maxPitchAngle = 60f;
+    [SerializeField] private float maxYawAngle = 60f;
+    [SerializeField] private bool invertPitchInput = false;
+    [SerializeField] private bool invertYawInput = false;
+    [SerializeField] private float rotationSmoothSpeed = 10f;
+
     [Header("점프 설정")]
     [SerializeField] private float jumpHeight = 10f;
 
+    [Header("충돌 판정")]
+    [SerializeField] private LayerMask obstacleLayers = 0;
+
     private Coroutine flight_co;
     private float jumpVelocity;
+    private float initialYaw;
+    private float initialRoll;
+    private float targetPitch;
+    private float targetYawOffset;
+
     private bool isFlying;
+
+    public event Action FlightEnded;
 
     private void Awake()
     {
@@ -29,6 +50,11 @@ public class Chicken : MonoBehaviour
         TryGetComponent(out follower);
 
         RecalculateJumpVelocity();
+
+        if (controlRotation)
+        {
+            rb.constraints |= RigidbodyConstraints.FreezeRotation;
+        }
 
         gameObject.SetActive(false);
     }
@@ -56,6 +82,10 @@ public class Chicken : MonoBehaviour
         {
             Jump();
         }
+        if (controlRotation)
+        {
+            ReadRotationInput(keyboard);
+        }
     }
 
     private void Jump()
@@ -73,6 +103,38 @@ public class Chicken : MonoBehaviour
 
     }
 
+    private void ReadRotationInput(Keyboard keyboard)
+    {
+        float pitchInput = 0f;
+        if (keyboard.wKey.isPressed) pitchInput += 1f;
+        if (keyboard.sKey.isPressed) pitchInput -= 1f;
+        if (invertPitchInput) pitchInput *= -1f;
+
+        float yawInput = 0f;
+        if (keyboard.dKey.isPressed) yawInput += 1f;
+        if (keyboard.aKey.isPressed) yawInput -= 1f;
+        if (invertYawInput) yawInput *= -1f;
+
+        targetPitch = Mathf.Clamp(targetPitch + pitchInput * pitchSpeed * Time.deltaTime, -maxPitchAngle, maxPitchAngle);
+        targetYawOffset = Mathf.Clamp(targetYawOffset + yawInput * yawSpeed * Time.deltaTime, -maxYawAngle, maxYawAngle);
+    }
+
+    private void FixedUpdate()
+    {
+        if (isFlying && controlRotation) ApplyRotation();
+    }
+
+    private void ApplyRotation()
+    {
+        Quaternion targetRotation = Quaternion.Euler(targetPitch, initialYaw + targetYawOffset, initialRoll);
+        Quaternion next = Quaternion.Slerp(
+            rb.rotation,
+            targetRotation,
+            1f - Mathf.Exp(-rotationSmoothSpeed * Time.fixedDeltaTime));
+
+        rb.MoveRotation(next);
+    }
+
     public void LastFlight(TrainCar car) //기차가 사라지는 순간에 호출해서 값을 받는 코드
     {
         TrainPathFollower locofollower = car.GetComponent<TrainPathFollower>();
@@ -81,10 +143,18 @@ public class Chicken : MonoBehaviour
         Quaternion rotation = car.Body.rotation;
         IReadOnlyList<Vector3> snapPath = locofollower != null ? locofollower.RawWaypoints : null;
 
+        gameObject.SetActive(true);
+
         rb.position = position;
         rb.rotation = rotation;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        Vector3 startEuler = rotation.eulerAngles;
+        initialYaw = startEuler.y;
+        initialRoll = startEuler.z;
+        targetPitch = 0f;
+        targetYawOffset = 0f;
 
         if (snapPath != null && follower != null)
         {
@@ -93,10 +163,6 @@ public class Chicken : MonoBehaviour
         }
 
         StartFlightTimer();
-
-        gameObject.SetActive(true);
-
-        //기차 사라지는 부분 추가 필요함
     }
 
     private void StartFlightTimer()
@@ -127,6 +193,15 @@ public class Chicken : MonoBehaviour
         StopFlying();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isFlying) return;
+        if (obstacleLayers.value == 0) return;
+        if ((obstacleLayers.value & (1 << collision.gameObject.layer)) == 0) return;
+
+        StopFlying();
+    }
+
     private void StopFlying()
     {
         isFlying = false;
@@ -135,5 +210,13 @@ public class Chicken : MonoBehaviour
         {
             follower.ExternalOverride = true; // 경로 추종/컨트롤 정지 → 이후 FixedUpdate가 속도를 건드리지 않음
         }
+
+        if (flight_co != null)
+        {
+            StopCoroutine(flight_co);
+            flight_co = null;
+        }
+
+        FlightEnded?.Invoke();
     }
 }

@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private TrainConsist consist;
     [SerializeField] private ScrollController scroll;
+    [SerializeField] private CameraCtrl cameraCtrl;
+    [SerializeField] private Chicken chicken;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Text gameOverText;
     [SerializeField] private Key restartKey = Key.R;
@@ -17,6 +19,9 @@ public class GameManager : MonoBehaviour
     {
         if (consist == null) consist = FindFirstObjectByType<TrainConsist>();
         if (scroll == null) scroll = FindFirstObjectByType<ScrollController>();
+        if (cameraCtrl == null) cameraCtrl = FindFirstObjectByType<CameraCtrl>();
+        if (chicken == null) chicken = FindAnyObjectByType<Chicken>(FindObjectsInactive.Include);
+        //비활성화 상태로 있어서 평범하게는 검색이 안 됨
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
 
         if (consist == null)
@@ -27,11 +32,26 @@ public class GameManager : MonoBehaviour
 
         // 머리가 트레일 없이 직접 부딪혔을 때만 게임오버 
         consist.LocomotiveCrashed += HandleLocomotiveCrashed;
+
+        if (chicken != null)
+        {
+            chicken.FlightEnded += HandleFlightEnded; // ← 추가
+        }
     }
 
     private void HandleLocomotiveCrashed(TrainCar car, Collision collision)
     {
-        TriggerGameOver();
+        chicken.LastFlight(car);
+        if (cameraCtrl != null)
+        {
+            cameraCtrl.SetTarget(chicken.transform);
+        }
+        car.gameObject.SetActive(false);
+    }
+
+    private void HandleFlightEnded()
+    {
+        TriggerGameOver(); 
     }
 
     private void TriggerGameOver()
@@ -71,6 +91,11 @@ public class GameManager : MonoBehaviour
         if (consist != null)
         {
             consist.LocomotiveCrashed -= HandleLocomotiveCrashed;
+        }
+
+        if (chicken != null)
+        {
+            chicken.FlightEnded -= HandleFlightEnded; 
         }
     }
 }

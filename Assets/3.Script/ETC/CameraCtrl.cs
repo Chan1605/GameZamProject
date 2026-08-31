@@ -75,4 +75,12 @@ public class CameraCtrl : MonoBehaviour
         if (angle > 360) angle -= 360;
         return Mathf.Clamp(angle, min, max);
     }
+
+    public void SetTarget(Transform newTarget)
+    {
+        if (newTarget != null)
+        {
+            target = newTarget;
+        }
+    }
 }
