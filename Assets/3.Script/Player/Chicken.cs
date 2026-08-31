@@ -137,6 +137,9 @@ public class Chicken : MonoBehaviour
 
     public void LastFlight(TrainCar car) //기차가 사라지는 순간에 호출해서 값을 받는 코드
     {
+        SoundMgr.Instance.PlayEffSound("chicken_appear", 0.4f);
+        SoundMgr.Instance.PlayEffSound("chicken_loop", 0.3f);
+
         TrainPathFollower locofollower = car.GetComponent<TrainPathFollower>();
         //
         Vector3 position = car.Body.position;
@@ -218,5 +221,7 @@ public class Chicken : MonoBehaviour
         }
         
         FlightEnded?.Invoke();
+
+        SoundMgr.Instance.SoundOnOff(true);
     }
 }
