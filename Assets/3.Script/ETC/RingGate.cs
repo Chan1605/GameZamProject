@@ -32,7 +32,6 @@ public class RingGate : MonoBehaviour
 
         if (scoreManager != null)
         {
-            // 트레일(머리 제외) 개수만큼 배율. 트레일 다 잃으면 0점.
             int carCount = consist != null ? consist.AttachedCarCount : 1;
             scoreManager.AddScore(Mathf.Max(1, carCount));
         }
