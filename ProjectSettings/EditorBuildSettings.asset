@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/1.Scene/Title.unity
     guid: d3bfb27b89958564490ea6e9f0b724e7
   - enabled: 1
+    path: Assets/1.Scene/JcScene.unity
+    guid: 8d675606350be8e43a33db8a81a91a00
+  - enabled: 1
     path: Assets/1.Scene/Result.unity
     guid: bafb1bc2af128004f86646c3d06d2edf
   m_configObjects:

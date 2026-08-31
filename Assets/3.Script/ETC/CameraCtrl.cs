@@ -36,6 +36,8 @@ public class CameraCtrl : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!target)
+            return;
         Vector2 mouseDelta = Mouse.current != null ? Mouse.current.delta.ReadValue() : Vector2.zero;
         float scroll = Mouse.current != null ? Mouse.current.scroll.ReadValue().y : 0f;
 
