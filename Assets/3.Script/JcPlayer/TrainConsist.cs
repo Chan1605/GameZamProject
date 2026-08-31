@@ -62,6 +62,9 @@ public class TrainConsist : MonoBehaviour
     public TrainCar Locomotive => locomotive;
     public int TotalCarCount => cars.Count;
 
+    /// <summary>차량 사이를 벌리는 거리(m). 스킬이 편성을 직접 이어 붙일 때 씁니다.</summary>
+    public float Gap => gap;
+
     /// <summary>지금 무적 상태인지 여부. UI에서 깜빡임 연출 등에 활용할 수 있습니다.</summary>
     public bool IsInvincible => Time.time < invincibleUntil;
 
