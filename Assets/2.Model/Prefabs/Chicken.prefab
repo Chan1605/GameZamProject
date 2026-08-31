@@ -1104,9 +1104,7 @@ GameObject:
   - component: {fileID: 8747300713032970832}
   - component: {fileID: 2067540586461556165}
   - component: {fileID: 6538025073826109791}
-  - component: {fileID: 4409004122796879814}
-  - component: {fileID: 5760102922160131541}
-  - component: {fileID: 2560829525552679690}
+  - component: {fileID: 5246752697161152734}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -1201,7 +1199,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.25
   m_Center: {x: 0, y: 0.25, z: 0.02}
---- !u!114 &4409004122796879814
+--- !u!114 &5246752697161152734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1214,50 +1212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chicken
   consist: {fileID: 0}
-  flightTime: 15
---- !u!114 &5760102922160131541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6504695851044073850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 176ed2504095eb14886d53a928994427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrainCar
-  carIndex: 0
-  frontCouplingPoint: {fileID: 0}
-  rearCouplingPoint: {fileID: 0}
-  autoFitCollider: 1
-  overrideMass: 1
-  mass: 1
-  detachImpulse: 1.5
-  detachTorque: 4
-  destroyDelay: 6
---- !u!114 &2560829525552679690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6504695851044073850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e26d3074accd0c54fa89c1b4a7172b6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrainController
+  flightTime: 5
   jumpHeight: 10
-  consist: {fileID: 0}
-  controlRotation: 1
-  pitchSpeed: 70
-  yawSpeed: 70
-  maxPitchAngle: 60
-  maxYawAngle: 60
-  invertPitchInput: 0
-  invertYawInput: 0
-  rotationSmoothSpeed: 10
 --- !u!1 &7243002591699041604
 GameObject:
   m_ObjectHideFlags: 0
