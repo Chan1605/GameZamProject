@@ -2274,7 +2274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillPoint
   skillUI: {fileID: 344012146}
-  <CurrentSkillPoint>k__BackingField: 0
 --- !u!23 &1020922477773372459
 MeshRenderer:
   m_ObjectHideFlags: 0
