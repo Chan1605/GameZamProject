@@ -15,7 +15,9 @@ public class SkillReadyUI : MonoBehaviour
     private void Start()
     {
         onSkillNum = 0;
+        SoundMgr.Instance.PlayBGM("Main_BGM", 0.2f);
     }
+
     public void SkillOn()
     {
         if(onSkillNum>3)

@@ -13,7 +13,13 @@ public class ResultUI : MonoBehaviour
     private void Start()
     {
         UpdatePlayerUI();
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        SoundMgr.Instance.SoundOnOff(false);
     }
+
 
     public void UpdatePlayerUI()
     {

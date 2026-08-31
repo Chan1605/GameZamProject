@@ -47,6 +47,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SoundMgr.Instance.SoundOnOff(true) ;
+    }
+
     private void HandleLocomotiveCrashed(TrainCar car, Collision collision)
     {
         chicken.LastFlight(car);
@@ -78,6 +83,8 @@ public class GameManager : MonoBehaviour
 
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
         if (gameOverText != null) gameOverText.text = "GAME OVER\nPress R to Restart";
+
+        SceneManager.LoadScene("Result");
     }
 
     private void Update()
