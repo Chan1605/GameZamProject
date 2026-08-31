@@ -30,7 +30,7 @@ public class TitleInput : MonoBehaviour
     {
         // 게임 씬 로드 메서드
         Debug.Log($"이름 : {SaveManager.Instance.PlayerName} 로 게임을 시작합니다.");
-        SceneManager.LoadScene("Result"); //나중에 게임 씬으로 바꿔야 함
+        SceneManager.LoadScene("JcScene"); //나중에 게임 씬으로 바꿔야 함
     }
 
     public void Debug_RandomScore()

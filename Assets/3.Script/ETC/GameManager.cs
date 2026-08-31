@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Text gameOverText;
     [SerializeField] private Key restartKey = Key.R;
+
+    [Header("보너스 타임 (닭)")]
+    [SerializeField] private float chickenBonusDuration = 3f;
+    //[SerializeField] private GameObject[] trainVisuals;
+    //[SerializeField] private GameObject chickenVisual;
+
+    private bool bonusStarted;
 
     public bool IsGameOver { get; private set; }
 
@@ -25,14 +33,31 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 머리가 트레일 없이 직접 부딪혔을 때만 게임오버 
+        // 머리가 트레일 없이 직접 부딪혔을 때만 게임오버
         consist.LocomotiveCrashed += HandleLocomotiveCrashed;
     }
 
     private void HandleLocomotiveCrashed(TrainCar car, Collision collision)
     {
+        if (bonusStarted || IsGameOver) return;
+        bonusStarted = true;
+        StartCoroutine(ChickenBonusThenGameOver());
+    }
+
+    private IEnumerator ChickenBonusThenGameOver()
+    {
+        consist.ForceInvincible(chickenBonusDuration + 0.5f);
+
+        if (consist.Locomotive != null && consist.Locomotive.TryGetComponent(out TrainController controller))
+        {
+            //controller.SetControllable(false);   // 조작(입력)만 비활성화, 이동은 유지
+            controller.ActivateChickenVisual();  // 비주얼만 교체
+        }
+
+        yield return new WaitForSeconds(chickenBonusDuration);
         TriggerGameOver();
     }
+
 
     private void TriggerGameOver()
     {
@@ -44,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         if (consist.Locomotive != null && consist.Locomotive.TryGetComponent(out TrainController controller))
         {
-            controller.enabled = false;
+           // controller.enabled = false;
         }
 
         if (gameOverPanel != null) gameOverPanel.SetActive(true);

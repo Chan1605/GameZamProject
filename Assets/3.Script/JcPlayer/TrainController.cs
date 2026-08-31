@@ -29,6 +29,14 @@ public class TrainController : MonoBehaviour
     private float targetYawOffset;
 
     public void AttachConsist(TrainConsist value) => consist = value;
+    public bool IsControllable { get; private set; } = true;
+    public void SetControllable(bool value) => IsControllable = value;
+
+
+    [Header("닭 (보너스 타임)")]
+
+    [SerializeField] private GameObject[] trainVisuals;
+    [SerializeField] private GameObject chickenVisual;
 
     private void Awake()
     {
@@ -50,6 +58,17 @@ public class TrainController : MonoBehaviour
     {
         float gravity = Mathf.Abs(Physics.gravity.y);
         jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
+    }
+
+    public void ActivateChickenVisual()
+    {
+        if (trainVisuals != null)
+        {
+            for (int i = 0; i < trainVisuals.Length; i++)
+                trainVisuals[i].SetActive(false);
+        }
+        if (chickenVisual != null)
+            chickenVisual.SetActive(true);
     }
 
     private void Update()
