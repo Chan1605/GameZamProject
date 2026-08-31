@@ -14,6 +14,15 @@ public class ScoreManager : MonoBehaviour
         RefreshUI();
     }
 
+
+    private void OnDestroy()
+    {
+        if (SaveManager.Instance != null) //방어코드 추가
+        {
+            SaveManager.Instance.PlayerScore = Score;
+        }
+    }
+
     public void AddScore(int amount)
     {
         Score += amount;
