@@ -24,9 +24,9 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b4f152e0498484391a9f0d5a1facf03b, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 410087040}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &227933581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227933583}
+  - component: {fileID: 227933582}
+  m_Layer: 0
+  m_Name: ArrowDirect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &227933582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227933581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07042fee0970c4540879f6ec82cf422f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CourseArrowSpawner
+  spawner: {fileID: 0}
+  arrowPrefab: {fileID: 7454116284326286350, guid: 69df88184d8a219418307d839b1b09b6, type: 3}
+  offset: {x: 0, y: 0, z: 0}
+  scale: 2
+  keepLevel: 0
+  trimTail: 0
+--- !u!4 &227933583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227933581}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.49968, y: 0, z: 40.697}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &279515904
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +282,7 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -604,7 +654,7 @@ MonoBehaviour:
   controlRotation: 1
   pitchSpeed: 70
   yawSpeed: 70
-  maxPitchAngle: 25
+  maxPitchAngle: 45
   maxYawAngle: 60
   invertPitchInput: 0
   invertYawInput: 0
@@ -1147,10 +1197,14 @@ MonoBehaviour:
   chunkVariants:
   - prefab: {fileID: 1789690884693139818, guid: 953589ff159ad874a91ee3c6c1b295d8, type: 3}
     weight: 1
+  - prefab: {fileID: 1789690884693139818, guid: 4886bdd080ced8d48a1c8f445d6bc746, type: 3}
+    weight: 1
+  - prefab: {fileID: 1789690884693139818, guid: 5982f33c85e440949add928448afb91e, type: 3}
+    weight: 1
   chunkCount: 3
   startOffset: 60
   avoidImmediateRepeat: 1
-  startVariantIndex: 0
+  startVariantIndex: 2
   randomSeed: 0
   axisReference: {fileID: 0}
   despawnBehind: 40
@@ -1463,7 +1517,7 @@ GameObject:
   - component: {fileID: 2054633847}
   - component: {fileID: 2054633846}
   m_Layer: 0
-  m_Name: TrainDirectional light
+  m_Name: FillLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1515,7 +1569,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2220,7 +2274,10 @@ MonoBehaviour:
   pathFollower: {fileID: 0}
   skillPoint: {fileID: 919132148984806071}
   SkillKey: 19
+  skillCost: 3
   SlowScale: 1
+  chainFollowSpeed: 0
+  keepChainDuringBash: 1
   bashForce: 10
   bashDuration: 0.35
   invincibleDuration: 0.4
@@ -6526,3 +6583,4 @@ SceneRoots:
   - {fileID: 836144770}
   - {fileID: 1676199294}
   - {fileID: 344012147}
+  - {fileID: 227933583}
