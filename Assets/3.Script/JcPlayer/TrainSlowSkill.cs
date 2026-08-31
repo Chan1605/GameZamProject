@@ -7,6 +7,8 @@ public class TrainSlowSkill : MonoBehaviour
 {
     [SerializeField] private TrainConsist consist;
     [SerializeField] private TrainPathFollower pathFollower;
+    [SerializeField] private PlayerSkillPoint skillPoint;
+
 
     [Header("입력")]
     [SerializeField] private Key SkillKey = Key.E;
@@ -40,9 +42,11 @@ public class TrainSlowSkill : MonoBehaviour
     {
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
+        
 
         if (keyboard[SkillKey].wasPressedThisFrame && !isBashing)
         {
+            if (skillPoint.UseSkillPoint(3).Equals(false)) return; //스킬포인트 확인 후 재생
             StartAim();
         }
         else if (keyboard[SkillKey].wasReleasedThisFrame && isAiming)
