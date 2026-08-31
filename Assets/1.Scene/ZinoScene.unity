@@ -815,6 +815,8 @@ MonoBehaviour:
   chunkVariants:
   - prefab: {fileID: 1789690884693139818, guid: 953589ff159ad874a91ee3c6c1b295d8, type: 3}
     weight: 1
+  - prefab: {fileID: 1789690884693139818, guid: 4886bdd080ced8d48a1c8f445d6bc746, type: 3}
+    weight: 1
   chunkCount: 3
   startOffset: 150
   avoidImmediateRepeat: 1
