@@ -43,6 +43,7 @@ public class TrainPathFollower : MonoBehaviour
     public Vector3 CurrentForward { get; private set; } = Vector3.forward;
     public float CurrentYaw => currentYaw;
     public float DistanceTraveled => distanceAlongPath;
+    public IReadOnlyList<Vector3> RawWaypoints => raw;
     private float Speed => scroll != null ? scroll.Speed : speed;
 
     public bool ExternalOverride { get; set; }
